@@ -1,0 +1,17 @@
+services: # define all containers/services Docker will manage
+  db: # name of the service - optionally called db cause its a postgres db
+    image: postgres:17.4
+    conainer_name: fieldnotes_db
+    restart: always # container auto restarts on crash or docker restart
+    environment: # environment variables for the container
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports: # ports to expose
+      - "8005:5432"
+    volumes: # volumes to mount
+      - db-data:/var/lib/postgresql/data
+
+volumes: # volumes to create
+  db-data:
+
