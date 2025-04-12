@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api;
 
-public static class DependncyInjection
+public static class DependencyInjection
 {
     public static WebApplicationBuilder AddInfrastructure(this WebApplicationBuilder builder)
     {
