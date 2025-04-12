@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Core;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Text.Json;
+using Core.Entities;
 
 namespace Infrastructure;
 
