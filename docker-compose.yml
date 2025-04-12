@@ -11,6 +11,12 @@ services: # define all containers/services Docker will manage
       - "8001:5432"
     volumes: # volumes to mount
       - db-data:/var/lib/postgresql/data
+  api:
+    build: .
+    environment:
+      DB_CONNECTION_STRING: Host=localhost;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+    depends_on:
+      - db
 
 volumes: # volumes to create
   db-data:
