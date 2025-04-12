@@ -5,11 +5,11 @@ using System.Text.Json;
 
 namespace Infrastructure;
 
-public class AppDbContext : DbContext
+public class DataContext : DbContext
 {
     public DbSet<Note> Notes => Set<Note>();
 
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
     // protected override void OnModelCreating(ModelBuilder modelBuilder)
     // {

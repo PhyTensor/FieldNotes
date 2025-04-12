@@ -4,9 +4,9 @@ services: # define all containers/services Docker will manage
     container_name: fieldnotes_db
     restart: always # container auto restarts on crash or docker restart
     environment: # environment variables for the container
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERID}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports: # ports to expose
       - "8001:5432"
     volumes: # volumes to mount
@@ -14,7 +14,7 @@ services: # define all containers/services Docker will manage
   api:
     build: .
     environment:
-      DB_CONNECTION_STRING: Host=localhost;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      DB_CONNECTION_STRING: 'Server=localhost;Port=5432;Database=${DB_NAME};Username=${DB_USERID};Password=${DB_PASSWORD}'
     depends_on:
       - db
 

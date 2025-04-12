@@ -13,12 +13,11 @@ public static class DependncyInjection
         var fallback = builder.Configuration.GetConnectionString("DefaultConnection");
 
         var connectionString = string.IsNullOrWhiteSpace(envConnString) ? fallback : envConnString;
-
+        Console.WriteLine($"env Connection String: {envConnString} - Conncetion String: {connectionString}");
 
         // var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Host=localhost;Database=fieldnotes;Username=postgres;Password=postgres";
 
-        builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
-
+        builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(connectionString));
 
         return builder;
     }
