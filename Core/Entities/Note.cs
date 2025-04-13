@@ -6,6 +6,6 @@ public class Note
     public string Title { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public List<string> Tags { get; set; } = new();
-    public string? Location { get; set; }
+    // public List<string> Tags { get; set; } = new();
+    // public string? Location { get; set; }
 }

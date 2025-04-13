@@ -22,8 +22,7 @@ public class NoteService : INoteService
             Id = Guid.NewGuid(),
             Title = request.Title,
             Content = request.Content,
-            CreatedAt = DateTime.Now,
-
+            CreatedAt = DateTime.UtcNow,
         };
 
         _context.Notes.Add(note);
