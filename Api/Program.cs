@@ -2,7 +2,13 @@ using Api;
 using Application.Models;
 using Application.Services;
 
+using Microsoft.AspNetCore.OpenApi;
+using Scalar.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddOpenApi();
+
 // builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 // builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: false, reloadOnChange: true);
 builder.AddInfrastructure();
@@ -37,6 +43,18 @@ app.MapDelete("/notes/{id:guid}", async (Guid id, INoteService service) =>
     var success = await service.DeleteAsync(id);
     return success ? Results.NoContent() : Results.NotFound();
 });
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference(options => options
+    .WithTitle("Demo API")
+    .WithTheme(ScalarTheme.Saturn)
+    // .WithTheme(ScalarTheme.Kepler)
+    .WithDarkModeToggle(true)
+    .WithClientButton(true)
+    );
+}
 
 app.Run();
 
