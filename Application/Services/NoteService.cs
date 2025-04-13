@@ -3,16 +3,19 @@ using Application.Projections;
 using Core.Entities;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Services;
 
 public class NoteService : INoteService
 {
     private readonly DataContext _context;
+    private readonly ILogger<NoteService> _logger;
 
-    public NoteService(DataContext context)
+    public NoteService(DataContext context, ILogger<NoteService> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<NoteResponse> CreateAsync(CreateNoteRequest request)
@@ -27,6 +30,7 @@ public class NoteService : INoteService
 
         _context.Notes.Add(note);
         await _context.SaveChangesAsync();
+        _logger.LogInformation("Note created: {@Note}", note);
 
         return note.ToResponse();
     }
@@ -34,7 +38,11 @@ public class NoteService : INoteService
     public async Task<bool> DeleteAsync(Guid id)
     {
         var note = await _context.Notes.FindAsync(id);
-        if (note == null) return false;
+        if (note == null)
+        {
+            _logger.LogWarning("Note with ID {Id} not found", id);
+            return false;
+        }
 
         _context.Notes.Remove(note);
         await _context.SaveChangesAsync();
