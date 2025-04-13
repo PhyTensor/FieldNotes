@@ -44,6 +44,25 @@ app.MapDelete("/notes/{id:guid}", async (Guid id, INoteService service) =>
     return success ? Results.NoContent() : Results.NotFound();
 });
 
+
+// Middleware for error handling
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next();
+    }
+    catch (Exception ex)
+    {
+        var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Unhandled exception");
+
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+        await context.Response.WriteAsJsonAsync(new { error = "Something went wrong." });
+    }
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
