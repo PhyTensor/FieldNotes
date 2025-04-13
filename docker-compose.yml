@@ -10,14 +10,34 @@ services: # define all containers/services Docker will manage
     ports: # ports to expose
       - "8001:5432"
     volumes: # volumes to mount
-      - db-data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
   api:
-    build: .
+    build:
+      context: ./Api/
     environment:
       DB_CONNECTION_STRING: 'Server=localhost;Port=5432;Database=${DB_NAME};Username=${DB_USERID};Password=${DB_PASSWORD}'
+      ASPNETCORE_ENVIRONMENT: Development
     depends_on:
       - db
+    ports:
+      - "5000:80"
+    networks:
+      - backend
+  ui:
+    build:
+      context: ./Client/
+    depends_on:
+      - api
+    environment:
+      - API_URL=http://api:80
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
 
 volumes: # volumes to create
-  db-data:
+  pgdata:
 
+networks:
+  backend:
+    driver: bridge
